@@ -1,3 +1,4 @@
+
 def say(msg)
   puts "=> #{msg}"
 end
@@ -20,36 +21,38 @@ end
 exit_with("No input file") if ARGV.empty?
 exit_with("File does not exist!") if !File.exists?(ARGV[0])
 
+
 nouns_list = read_file("nouns.txt")
 verbs_list = read_file("verbs.txt")
 adjectives_list = read_file("adjectives.txt")
 adverbs_list = read_file("adverbs.txt")
-
-dictionary = {NOUN: nouns_list, verbs: verbs_list, adjectives: adjectives_list, adverbs: adverbs_list}
-
-
+# begin # when I put begin here, the code will reload
 original = read_content("sample.txt")
+# begin # when I put begin here, the code will not reload
+dictionary = {noun: nouns_list, verbs: verbs_list, 
+                      adjectives: adjectives_list, adverbs: adverbs_list}
 
-puts "Welcome to joke maker!"
-
-# Todo: no new joke will be generated when user typed n.
-# Todo: use regex to match the exact words we target.
-begin
+# Problem: no new joke will be generated when user typed y.
+# Problem: use regex to match the exact words we target. ADVERBS AND VERBS clash to one another.
+begin # when I put begin here, no joke will not reload
   system "clear"
+  puts "Welcome to joke maker!"
   original.gsub!('NOUN').each do 
-    nouns_list.sample
+    dictionary[:noun].sample
   end
   original.gsub!('VERB').each do
-    verbs_list.sample
+    dictionary[:verbs].sample
   end
   original.gsub!('ADJECTIVE').each do
-    adjectives_list.sample
+    dictionary[:adjectives].sample
   end
   original.gsub!('XXX').each do
-    adverbs_list.sample
+    dictionary[:adverbs].sample
   end
   puts original
-  puts "quit? y/n"
+  puts "More joke? y/n"
   decision = STDIN.gets.chomp
-end until decision == 'y'
+end until decision != 'y'
+
+
 
