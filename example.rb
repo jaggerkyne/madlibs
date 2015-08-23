@@ -1,4 +1,4 @@
-
+# begin # when I put begin here, the code will reload
 def say(msg)
   puts "=> #{msg}"
 end
